@@ -4,9 +4,12 @@ import {
   Entity,
   OneToMany,
   BaseEntity,
+  OneToOne,
+  AfterInsert,
 } from "typeorm";
 import { Reservation } from "./reservation.entitiy";
 import { Field, ID, ObjectType } from "type-graphql";
+import { Lock } from "./lock.entitiy";
 
 @ObjectType()
 @Entity()
@@ -15,10 +18,18 @@ export class Unit extends BaseEntity {
   @Field((type) => ID)
   id: number;
 
-  @Column({ type: "text" })
+  @Column({ type: "text", unique: true })
   @Field()
   unit_name: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.unit)
-  reservations: Reservation[];
+  reservations?: Reservation[];
+
+  @OneToOne(() => Lock, (lock) => lock.unit)
+  lock?: Lock;
+
+  @AfterInsert()
+  generateAccessCode() {
+    const id = this.id;
+  }
 }

@@ -18,7 +18,8 @@
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
       "type-graphql": "^1.1.1",
-      "typeorm": "0.3.6"
+      "typeorm": "0.3.6",
+      "typeorm-seeding": "^1.6.1"
    },
    "devDependencies": {
       "dotenv": "^16.0.1",

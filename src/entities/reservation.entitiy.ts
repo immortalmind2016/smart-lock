@@ -6,7 +6,10 @@ import {
   JoinColumn,
   ManyToOne,
   BaseEntity,
+  OneToOne,
+  AfterInsert,
 } from "typeorm";
+import { AccessCode } from "./access-code.entity";
 import { Unit } from "./unit.entity";
 
 @ObjectType()
@@ -16,12 +19,15 @@ export class Reservation extends BaseEntity {
   @Field()
   id: number;
 
-  @Column({})
+  @Column({ type: "bigint" })
   unit_id: number;
 
   @ManyToOne(() => Unit, (unit) => unit.reservations, { onDelete: "CASCADE" })
   @JoinColumn({ name: "unit_id" })
   unit: Unit;
+
+  @OneToOne(() => AccessCode, (accessCode) => accessCode.reservation)
+  accessCode: Reservation;
 
   @Column({ type: "text" })
   @Field()
