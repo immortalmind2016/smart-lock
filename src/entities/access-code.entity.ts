@@ -4,12 +4,10 @@ import {
   PrimaryGeneratedColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
   BaseEntity,
   OneToOne,
 } from "typeorm";
 import { Reservation } from "./reservation.entitiy";
-import { Unit } from "./unit.entity";
 
 @ObjectType()
 @Entity({ name: "access_code" })

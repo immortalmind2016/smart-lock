@@ -5,7 +5,6 @@ import {
   OneToMany,
   BaseEntity,
   OneToOne,
-  AfterInsert,
 } from "typeorm";
 import { Reservation } from "./reservation.entitiy";
 import { Field, ID, ObjectType } from "type-graphql";

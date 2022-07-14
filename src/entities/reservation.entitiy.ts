@@ -7,7 +7,6 @@ import {
   ManyToOne,
   BaseEntity,
   OneToOne,
-  AfterInsert,
 } from "typeorm";
 import { AccessCode } from "./access-code.entity";
 import { Unit } from "./unit.entity";

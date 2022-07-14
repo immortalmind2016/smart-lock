@@ -1,15 +1,11 @@
 import { Unit } from "../entities/unit.entity";
 import {
   Arg,
-  Ctx,
-  Field,
   FieldResolver,
-  InputType,
   Mutation,
   Query,
   Resolver,
   Root,
-  UseMiddleware,
 } from "type-graphql";
 import { Reservation } from "../entities/reservation.entitiy";
 import { HasLock } from "../decorators/has-lock";

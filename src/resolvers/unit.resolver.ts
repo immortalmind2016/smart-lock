@@ -1,7 +1,5 @@
 import { Unit } from "../entities/unit.entity";
-import { Arg, Mutation, Query, Resolver, Root } from "type-graphql";
-import { Reservation } from "../entities/reservation.entitiy";
-import { AppDataSource } from "../data-source";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 
 @Resolver(Unit)
 class UnitResolver {
