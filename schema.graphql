@@ -1,0 +1,52 @@
+scalar Date
+
+type Query {
+  reservations: [Reservation]
+}
+type Unit {
+  id: ID!
+  unit_name: String!
+}
+type Reservation {
+  id: ID!
+  unit: Unit!
+  check_in: Date!
+  check_out: Date!
+  is_cancelled: Boolean!
+}
+
+type lock {
+  id: ID!
+  unit: Unit!
+  remote_lock_id: String!
+}
+
+type AccessCode {
+  id: ID!
+  reservation_id: String!
+  passcode: String!
+  remote_passcode_id: String!
+}
+
+type Mutation {
+  createReservation(
+    unitID: ID!
+    guestName: String!
+    checkIn: String!
+    checkOut: String!
+  ): Reservation
+  updateReservation(
+    reservationID: ID!
+    unitID: ID!
+    guestName: String!
+    checkIn: String!
+    checkOut: String!
+  ): Reservation
+  cancelReservation(
+    reservationID: ID!
+    unitID: ID!
+    guestName: String!
+    checkIn: String!
+    checkOut: String!
+  ): Reservation
+}
