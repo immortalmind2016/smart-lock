@@ -1,23 +1,28 @@
 import { ApolloServer, gql } from "apollo-server";
-import fs from "fs";
-import path from "path";
-import "dotenv/config";
-import resolvers from "./resolvers";
-import envConfig from "./env-config";
+import "reflect-metadata";
+import envConfig from "./utils/env-config";
+import { buildSchema } from "type-graphql";
+import { AppDataSource } from "./data-source";
 
 const { PORT } = envConfig;
+const start = async () => {
+  await AppDataSource.initialize();
 
-const typeDefs = gql(
-  fs.readFileSync(path.resolve(__dirname, "..", "schema.graphql"), "utf-8")
-);
+  console.log("Database is connected");
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  csrfPrevention: true,
-  cache: "bounded",
-});
+  const schema = await buildSchema({
+    resolvers: [__dirname + "/**/*.resolver.{ts,js}"],
+    dateScalarMode: "timestamp",
+  });
 
-server.listen(PORT).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+  const server = new ApolloServer({
+    schema,
+    csrfPrevention: true,
+    cache: "bounded",
+  });
+
+  server.listen(PORT).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
+};
+start();

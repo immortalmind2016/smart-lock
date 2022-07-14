@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    db:
+        image: postgres
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: ${DB_HOST}
+            POSTGRES_USER:  ${DB_USER}
+            POSTGRES_PASSWORD:  ${DB_PASSWORD}
+        volumes:
+          - stellaDatabase:/postgresql/data
+
+volumes:
+  stellaDatabase:
+
