@@ -7,7 +7,7 @@ import {
   BaseEntity,
   OneToOne,
 } from "typeorm";
-import { Unit } from "./unit.entity";
+import { Unit } from "../../unit/entities/unit.entity";
 
 @ObjectType()
 @Entity()

@@ -1,4 +1,4 @@
-import { Unit } from "entities/unit.entity";
+import { Unit } from "../modules/unit/entities/unit.entity";
 
 export const unitsData: Pick<Unit, "id" | "unit_name">[] = [
   {

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
-import envConfig from "./utils/env-config";
+import envConfig from "./env-config";
 
 const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } = envConfig;
 
@@ -14,7 +14,7 @@ const options = {
   database: DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [`${__dirname}/entities/*.ts`],
+  entities: [`${__dirname}/../**/**/entities/*.entity.ts`],
   seeds: [`${__dirname}/seeds/*.ts`],
 };
 export const AppDataSource = new DataSource(

@@ -1,8 +1,8 @@
 import { ApolloServer, gql } from "apollo-server";
 import "reflect-metadata";
-import envConfig from "./utils/env-config";
+import envConfig from "./configs/env-config";
 import { buildSchema } from "type-graphql";
-import { AppDataSource } from "./data-source";
+import { AppDataSource } from "./configs/data-source";
 
 const { PORT } = envConfig;
 const start = async () => {

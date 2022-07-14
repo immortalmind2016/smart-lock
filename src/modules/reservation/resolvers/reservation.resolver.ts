@@ -1,4 +1,4 @@
-import { Unit } from "../entities/unit.entity";
+import { Unit } from "../../unit/entities/unit.entity";
 import {
   Arg,
   FieldResolver,
@@ -7,8 +7,8 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { Reservation } from "../entities/reservation.entitiy";
-import { HasLock } from "../decorators/has-lock";
+import { Reservation } from "../entities/reservation.entity";
+import { HasLock } from "../../../decorators/has-lock";
 
 @Resolver(Reservation)
 class ReservationResolver {

@@ -8,8 +8,8 @@ import {
   BaseEntity,
   OneToOne,
 } from "typeorm";
-import { AccessCode } from "./access-code.entity";
-import { Unit } from "./unit.entity";
+import { AccessCode } from "../../access-code/entities/access-code.entity";
+import { Unit } from "../../unit/entities/unit.entity";
 
 @ObjectType()
 @Entity()

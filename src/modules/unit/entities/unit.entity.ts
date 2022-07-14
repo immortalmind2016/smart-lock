@@ -6,9 +6,9 @@ import {
   BaseEntity,
   OneToOne,
 } from "typeorm";
-import { Reservation } from "./reservation.entitiy";
+import { Reservation } from "../../reservation/entities/reservation.entity";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Lock } from "./lock.entitiy";
+import { Lock } from "../../lock/entities/lock.entity";
 
 @ObjectType()
 @Entity()

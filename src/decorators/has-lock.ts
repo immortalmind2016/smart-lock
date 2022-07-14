@@ -1,4 +1,4 @@
-import { Lock } from "../entities/lock.entitiy";
+import { Lock } from "../modules/lock/entities/lock.entity";
 import { createMethodDecorator } from "type-graphql";
 
 export function HasLock() {

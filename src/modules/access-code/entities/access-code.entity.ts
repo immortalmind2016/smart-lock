@@ -7,7 +7,7 @@ import {
   BaseEntity,
   OneToOne,
 } from "typeorm";
-import { Reservation } from "./reservation.entitiy";
+import { Reservation } from "../../reservation/entities/reservation.entity";
 
 @ObjectType()
 @Entity({ name: "access_code" })
