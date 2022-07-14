@@ -9,10 +9,11 @@ import {
   Query,
   Resolver,
   Root,
+  UseMiddleware,
 } from "type-graphql";
 import { Reservation } from "../entities/reservation.entitiy";
-import { AppDataSource } from "../data-source";
-import { Timestamp } from "typeorm";
+import { hasLock } from "../middleware/lock";
+import { HasLock } from "../decorators/has-lock";
 
 @Resolver(Reservation)
 class ReservationResolver {
@@ -22,7 +23,8 @@ class ReservationResolver {
   }
 
   @Mutation(() => Reservation)
-  createReservation(
+  @HasLock()
+  async createReservation(
     @Arg("unitID") unit_id: number,
     @Arg("guestName") guest_name: string,
     @Arg("checkIn") check_in: Date,
@@ -34,7 +36,13 @@ class ReservationResolver {
       check_in,
       check_out,
     });
-    return reservation.save();
+    try {
+      const createdReservation = await reservation.save();
+      return createdReservation;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   @FieldResolver(() => Unit)

@@ -27,9 +27,4 @@ export class Unit extends BaseEntity {
 
   @OneToOne(() => Lock, (lock) => lock.unit)
   lock?: Lock;
-
-  @AfterInsert()
-  generateAccessCode() {
-    const id = this.id;
-  }
 }

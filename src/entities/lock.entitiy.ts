@@ -24,6 +24,7 @@ export class Lock extends BaseEntity {
   @JoinColumn({ name: "unit_id" })
   unit: Unit;
 
+  //external device id
   @Column({ type: "text" })
   @Field()
   remote_lock_id: string;
