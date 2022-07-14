@@ -1,6 +1,7 @@
 import { Unit } from "../../unit/entities/unit.entity";
 import {
   Arg,
+  Ctx,
   FieldResolver,
   Mutation,
   Query,
@@ -8,7 +9,8 @@ import {
   Root,
 } from "type-graphql";
 import { Reservation } from "../entities/reservation.entity";
-import { HasLock } from "../../../decorators/has-lock";
+import { UseLock } from "../../../decorators/has-lock";
+import { Context } from "apollo-server-core";
 
 @Resolver(Reservation)
 class ReservationResolver {
@@ -18,12 +20,13 @@ class ReservationResolver {
   }
 
   @Mutation(() => Reservation)
-  @HasLock()
+  @UseLock()
   async createReservation(
     @Arg("unitID") unit_id: number,
     @Arg("guestName") guest_name: string,
     @Arg("checkIn") check_in: Date,
-    @Arg("checkOut") check_out: Date
+    @Arg("checkOut") check_out: Date,
+    @Ctx() context: Context
   ) {
     const reservation = Reservation.create({
       unit_id,
