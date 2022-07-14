@@ -12,7 +12,6 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import { Reservation } from "../entities/reservation.entitiy";
-import { hasLock } from "../middleware/lock";
 import { HasLock } from "../decorators/has-lock";
 
 @Resolver(Reservation)
