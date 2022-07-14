@@ -1,32 +1,36 @@
 {
-   "name": "Stella",
-   "version": "1.0.0",
-   "main": "index.js",
-   "author": "Mohamed Salah <immortal.mind2016@gmail.com>",
-   "license": "MIT",
-   "scripts": {
-      "start": "ts-node src/index.ts",
-      "start:dev": "nodemon -e .ts -x ts-node ./src/index.ts",
-      "seed": "cross-env PORT=3000 DB_PORT=5432 DB_HOST='localhost' DB_USER='stella' DB_PASSWORD='stella' DB_NAME='stella' ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ./src/data-source.ts",
-      "gen:gql": "graphql-codegen --config codegen.yml",
-      "typeorm": "typeorm-ts-node-commonjs"
-   },
-   "dependencies": {
-      "apollo-datasource": "^3.3.2",
-      "apollo-server": "^3.10.0",
-      "class-validator": "^0.13.2",
-      "graphql": "^15.3.0",
-      "pg": "^8.4.0",
-      "reflect-metadata": "^0.1.13",
-      "type-graphql": "^1.1.1",
-      "typeorm": "0.3.6",
-      "typeorm-seeding": "^1.6.1"
-   },
-   "devDependencies": {
-      "cross-env": "^7.0.3",
-      "dotenv": "^16.0.1",
-      "envalid": "^7.3.1",
-      "ts-node": "10.7.0",
-      "typescript": "4.5.2"
-   }
+  "name": "Stella",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mohamed Salah <immortal.mind2016@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "start:dev": "nodemon -e .ts -x ts-node ./src/index.ts",
+    "seed": "cross-env PORT=3000 DB_PORT=5432 DB_HOST='localhost' DB_USER='stella' DB_PASSWORD='stella' DB_NAME='stella' ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ./src/data-source.ts",
+    "gen:gql": "graphql-codegen --config codegen.yml",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "test": "jest"
+  },
+  "dependencies": {
+    "apollo-datasource": "^3.3.2",
+    "apollo-server": "^3.10.0",
+    "class-validator": "^0.13.2",
+    "graphql": "^15.3.0",
+    "jest": "^28.1.3",
+    "pg": "^8.4.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^28.0.6",
+    "type-graphql": "^1.1.1",
+    "typeorm": "0.3.6",
+    "typeorm-seeding": "^1.6.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
+    "envalid": "^7.3.1",
+    "ts-node": "10.7.0",
+    "typescript": "4.5.2"
+  }
 }
