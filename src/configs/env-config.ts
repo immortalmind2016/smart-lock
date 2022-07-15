@@ -8,6 +8,9 @@ const envConfig = cleanEnv(process.env, {
   DB_USER: str({ default: "test" }),
   DB_PASSWORD: str({ default: "test" }),
   DB_NAME: str({ default: "test" }),
+  TUYA_HOST: str({ default: "" }),
+  TUYA_SECRET_KEY: str({ default: "" }),
+  TUYA_ACCESS_KEY: str({ default: "" }),
 });
 
 export default envConfig;

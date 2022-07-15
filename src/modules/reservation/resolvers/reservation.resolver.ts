@@ -11,7 +11,10 @@ import {
 } from "type-graphql";
 import { Reservation } from "../entities/reservation.entity";
 import { UseLock } from "../../../decorators/has-lock";
-import { Context } from "apollo-server-core";
+
+import { Context, TempPasswordRequestBody } from "../../../types";
+import { generatePassword } from "../utils";
+import { generateTempPassword } from "../../../utils/tuya-services";
 
 @Resolver(Reservation)
 class ReservationResolver {
@@ -26,7 +29,8 @@ class ReservationResolver {
     @Arg("unitID") unit_id: number,
     @Arg("guestName") guest_name: string,
     @Arg("checkIn") check_in: Date,
-    @Arg("checkOut") check_out: Date
+    @Arg("checkOut") check_out: Date,
+    @Ctx() context: Context
   ) {
     const reservation = Reservation.create({
       unit_id,
@@ -37,6 +41,18 @@ class ReservationResolver {
     try {
       const createdReservation = await reservation.save();
       //logic of creating the access code will be here
+      //create access code on the IOT platform related to this device
+      const body: TempPasswordRequestBody = {
+        effective_time: check_in,
+        invalid_time: check_out,
+        name: `reservation-${guest_name}`,
+        password: String(generatePassword()),
+      };
+
+      const tempPassword = await generateTempPassword(
+        String(context.lockData?.id),
+        body
+      );
 
       return createdReservation;
     } catch (e) {
@@ -52,7 +68,8 @@ class ReservationResolver {
     @Arg("unitID") unit_id: number,
     @Arg("guestName") guest_name: string,
     @Arg("checkIn") check_in: Date,
-    @Arg("checkOut") check_out: Date
+    @Arg("checkOut") check_out: Date,
+    @Ctx() context: Context
   ) {
     try {
       const reservation = await Reservation.findOneBy({ id });
@@ -67,9 +84,7 @@ class ReservationResolver {
         check_out,
       });
 
-      //logic of delete/re-create the access code will be here
-
-      return reservation.save();
+      const createdReservation = await reservation.save();
     } catch (e) {
       console.log(e);
       return null;
