@@ -1,7 +1,8 @@
-import { AppDataSource } from "../configs/data-source";
+import { AppDataSource } from "../../../configs/data-source";
 import { graphql } from "graphql";
-import { graphqlCall } from "./graphql";
-import { Lock } from "../modules/lock/entities/lock.entity";
+import { graphqlCall } from "../../../test/graphql";
+import { Lock } from "../../lock/entities/lock.entity";
+import { runSeeder } from "typeorm-seeding";
 
 const createReservationMutation = `mutation createReservation($checkOut: Timestamp!, $checkIn: Timestamp!, $guestName: String!, $unitId: Float!){
     createReservation(checkOut: $checkOut, checkIn: $checkIn, guestName: $guestName, unitID: $unitId) {

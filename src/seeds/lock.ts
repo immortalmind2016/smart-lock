@@ -3,7 +3,7 @@ import { Connection } from "typeorm";
 import { locksData } from "../data/locks";
 import { Lock } from "../modules/lock/entities/lock.entity";
 
-export default class CreateUsers implements Seeder {
+export default class LockSeeder implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
     await connection
       .createQueryBuilder()
