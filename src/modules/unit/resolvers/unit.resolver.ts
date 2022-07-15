@@ -10,7 +10,6 @@ class UnitResolver {
 
   @Mutation(() => Unit)
   createUnit(@Arg("unit_name", { nullable: false }) unit_name: string) {
-    console.log({ unit_name });
     const unit = Unit.create({ unit_name });
     return unit.save();
   }
