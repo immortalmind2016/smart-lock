@@ -10,5 +10,7 @@ export default {
   coverageProvider: "v8",
   testMatch: ["**/test/**/*.test.[jt]s?(x)"],
   testEnvironment: "node",
-  preset: "ts-jest",
+  transform: {
+    "^.+\\.ts?$": "ts-jest",
+  },
 };

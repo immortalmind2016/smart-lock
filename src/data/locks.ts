@@ -1,4 +1,4 @@
-import { Lock } from "../modules/lock/entities/lock.entitiy";
+import { Lock } from "../modules/lock/entities/lock.entity";
 
 export const locksData: Pick<Lock, "id" | "unit_id" | "remote_lock_id">[] = [
   {

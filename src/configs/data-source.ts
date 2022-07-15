@@ -6,7 +6,7 @@ import envConfig from "./env-config";
 const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, isTest } = envConfig;
 
 const options = {
-  type: isTest ? "sqlite" : "postgres",
+  type: "postgres",
   host: DB_HOST,
   port: DB_PORT,
   username: DB_USER,

@@ -1,8 +1,14 @@
-{
+{  "ts-node": {
+   // these options are overrides used only by ts-node
+   "compilerOptions": {
+     "module": "commonjs"
+   }
+ },
    "compilerOptions": {
       "target": "es2016",
       "module": "commonjs",
       "baseUrl": "./src",
+      "rootDir": "src",
       "outDir": "/dist",
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,         
@@ -10,7 +16,11 @@
       "skipLibCheck": true ,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "strictPropertyInitialization": false
+      "strictPropertyInitialization": false,
+      
     },
-    "exclude": ["node_modules/**/*"]
+    "exclude": ["node_modules/**/*"],
+    "include": ["src/**/*", "jest-preset.js", "jest-preset.js"],
+    
+
 }
