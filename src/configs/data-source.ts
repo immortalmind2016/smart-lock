@@ -15,7 +15,7 @@ const options = {
   synchronize: true,
   logging: false,
   entities: [`${__dirname}/../**/**/entities/*.entity.ts`],
-  seeds: [`${__dirname}/seeds/*.ts`],
+  seeds: [`${__dirname}/../seeds/*.ts`],
 };
 export const AppDataSource = new DataSource(
   options as PostgresConnectionOptions
