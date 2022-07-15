@@ -3,6 +3,7 @@ import {
   Arg,
   Ctx,
   FieldResolver,
+  ID,
   Mutation,
   Query,
   Resolver,
@@ -25,8 +26,7 @@ class ReservationResolver {
     @Arg("unitID") unit_id: number,
     @Arg("guestName") guest_name: string,
     @Arg("checkIn") check_in: Date,
-    @Arg("checkOut") check_out: Date,
-    @Ctx() context: Context
+    @Arg("checkOut") check_out: Date
   ) {
     const reservation = Reservation.create({
       unit_id,
@@ -36,7 +36,40 @@ class ReservationResolver {
     });
     try {
       const createdReservation = await reservation.save();
+      //logic of creating the access code will be here
+
       return createdReservation;
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+
+  @Mutation(() => Reservation)
+  @UseLock()
+  async updateReservation(
+    @Arg("reservationID", () => ID) id: number,
+    @Arg("unitID") unit_id: number,
+    @Arg("guestName") guest_name: string,
+    @Arg("checkIn") check_in: Date,
+    @Arg("checkOut") check_out: Date
+  ) {
+    try {
+      const reservation = await Reservation.findOneBy({ id });
+      if (!reservation) {
+        throw new Error("NotFound Reservation");
+      }
+
+      Object.assign(reservation, {
+        unit_id,
+        guest_name,
+        check_in,
+        check_out,
+      });
+
+      //logic of delete/re-create the access code will be here
+
+      return reservation.save();
     } catch (e) {
       console.log(e);
       return null;
