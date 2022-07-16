@@ -114,7 +114,7 @@ export const update = async (id: number, input: InputType) => {
     check_out,
   });
 
-  const [createdReservation, generatedAccessCodeData] = await Promise.all([
+  const [updatedReservation, generatedAccessCodeData] = await Promise.all([
     reservation.save(),
     generateAccessCode(
       { remote_lock_id, check_in, check_out, guest_name, id },
@@ -124,6 +124,7 @@ export const update = async (id: number, input: InputType) => {
   await accessCodeService.updateRemotePassCode(reservation.id, {
     remote_passcode_id: generatedAccessCodeData.remote_passcode_id,
   });
+  return updatedReservation;
 };
 
 export const reservationService = {
