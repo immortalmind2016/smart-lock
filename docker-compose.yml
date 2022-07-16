@@ -16,6 +16,8 @@ services:
             POSTGRES_PASSWORD:  ${DB_PASSWORD}
         volumes:
           - stellaDatabase:/postgresql/data
+        depends_on:
+         - redis
 
 volumes:
   stellaDatabase:

@@ -21,16 +21,16 @@ export const httpClient = axios.create({
 interface HeadersOptions {
   method: string;
   signUrl: string;
-  body?: TempPasswordRequestBody;
+  body?: TempPasswordRequestBody | {};
 }
 export const httpClientHeaders = async ({
   method,
   signUrl,
-  body,
+  body = {},
 }: HeadersOptions) => {
   const contentHash = crypto
     .createHash("sha256")
-    .update(JSON.stringify(body || {}))
+    .update(!Object.keys(body).length ? "" : JSON.stringify(body))
     .digest("hex");
 
   const timestamp = Date.now().toString();

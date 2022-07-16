@@ -1,4 +1,4 @@
-import { cleanEnv, port, str } from "envalid";
+import { bool, cleanEnv, port, str } from "envalid";
 import "dotenv/config";
 
 const envConfig = cleanEnv(process.env, {
@@ -11,6 +11,7 @@ const envConfig = cleanEnv(process.env, {
   TUYA_HOST: str({ default: "" }),
   TUYA_SECRET_KEY: str({ default: "" }),
   TUYA_ACCESS_KEY: str({ default: "" }),
+  CLI: bool({ default: false }),
 });
 
 export default envConfig;
