@@ -1,7 +1,14 @@
-# Awesome Project Build with TypeORM
+# Details 
+A Smart-lock app
 
-Steps to run this project:
+# Docker Compose to Install Dependencies
+- docker-compose up -d 
+# Installation
+- set your .env file as example from .env.example
+- type `yarn` in your command line to install the dependencies
+- type `yarn migration:run` to run all needed migrations and seeding
+- type `yarn start:dev`
 
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+
+
+  
