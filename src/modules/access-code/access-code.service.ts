@@ -1,8 +1,11 @@
 import { AccessCode } from "./entities/access-code.entity";
 
-const create = (
-  input: Pick<AccessCode, "passcode" | "remote_passcode_id" | "reservation_id">
-) => {
+type InputType = Pick<
+  AccessCode,
+  "passcode" | "remote_passcode_id" | "reservation_id"
+>;
+
+const create = (input: InputType) => {
   const { passcode, remote_passcode_id, reservation_id } = input;
   const accessCode = AccessCode.create({
     passcode,
@@ -11,4 +14,14 @@ const create = (
   });
   return accessCode.save();
 };
-export const accessCodeService = { create };
+
+const updateRemotePassCode = (id: number, input: Partial<InputType>) => {
+  const { passcode, remote_passcode_id, reservation_id } = input;
+  return AccessCode.update(id, {
+    passcode,
+    remote_passcode_id,
+    reservation_id,
+  });
+};
+
+export const accessCodeService = { create, updateRemotePassCode };

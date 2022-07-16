@@ -17,6 +17,7 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "strictPropertyInitialization": false,
+      "noImplicitAny": false
     },
     "exclude": ["node_modules/**/*"],
     "include": ["src/**/*", "jest-preset.js", "jest-preset.js"],

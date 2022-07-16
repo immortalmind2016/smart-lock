@@ -59,19 +59,13 @@ class ReservationResolver {
     @Ctx() context: Context
   ) {
     try {
-      const reservation = await Reservation.findOneBy({ id });
-      if (!reservation) {
-        throw new Error("NotFound Reservation");
-      }
-
-      Object.assign(reservation, {
+      return reservationService.update(id, {
         unit_id,
         guest_name,
         check_in,
         check_out,
+        remote_lock_id: context.lockData?.remote_lock_id || "",
       });
-
-      const createdReservation = await reservation.save();
     } catch (e) {
       console.log(e);
       return null;

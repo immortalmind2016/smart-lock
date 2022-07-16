@@ -14,31 +14,25 @@ import {
 import dayjs from "dayjs";
 import { accessCodeService } from "../../modules/access-code/access-code.service";
 
-const create = async (
-  input: Pick<
-    Reservation,
-    "unit_id" | "guest_name" | "check_in" | "check_out"
-  > & { remote_lock_id: string }
-) => {
-  //create reservation and get access token to use it for creating the temp password
-  const [reservation, access_token] = await Promise.all([
-    reservationRepository.create(input),
-    redistAccessToken(),
-  ]);
-
-  const { check_in, check_out, guest_name } = reservation || {};
-
-  //get device info in order to catch the
-
-  const { remote_lock_id: deviceId } = input || {};
+// generate access code using device local key and save it inside access code
+const generateAccessCode = async (input, access_token: string) => {
+  const {
+    remote_lock_id: deviceId,
+    check_in,
+    check_out,
+    guest_name,
+    id,
+  } = input || {};
 
   if (!deviceId) {
     throw new Error("device id is not provided");
   }
+  //get device local_key in order to catch the
+
   const deviceLocalKey = await redisDeviceLocalKey(deviceId);
 
   if (!deviceLocalKey) {
-    const deviceInfo = await getDeviceInfo(access_token.token, deviceId);
+    const deviceInfo = await getDeviceInfo(access_token, deviceId);
 
     await setDeviceLocalKeyInRedis(deviceId, deviceInfo.local_key);
   }
@@ -63,14 +57,76 @@ const create = async (
   //   body
   // );
   const remote_passcode_id = "13124312";
-  accessCodeService.create({
+
+  return {
     passcode,
     remote_passcode_id,
-    reservation_id: reservation.id,
+    reservation_id: id,
+  };
+};
+type InputType = Pick<
+  Reservation,
+  "unit_id" | "guest_name" | "check_in" | "check_out"
+> & { remote_lock_id: string };
+const create = async (input: InputType) => {
+  //create reservation and get access token to use it to create the temp password
+  const [reservation, access_token] = await Promise.all([
+    reservationRepository.create(input),
+    redistAccessToken(),
+  ]);
+
+  const { check_in, check_out, guest_name, id } = reservation || {};
+  const { remote_lock_id } = input || {};
+
+  const { passcode, remote_passcode_id, reservation_id } =
+    (await generateAccessCode(
+      { remote_lock_id, check_in, check_out, guest_name, id },
+      access_token?.token
+    )) || {};
+
+  await accessCodeService.create({
+    passcode,
+    remote_passcode_id,
+    reservation_id: id,
   });
+
   return reservationRepository.create(input);
+};
+
+export const update = async (id: number, input: InputType) => {
+  const { unit_id, guest_name, check_in, check_out, remote_lock_id } =
+    input ?? {};
+
+  //find reservation and get access token to use it to create the temp password
+  const [reservation, access_token] = await Promise.all([
+    Reservation.findOneBy({ id }),
+    redistAccessToken(),
+  ]);
+
+  if (!reservation) {
+    throw new Error("NotFound Reservation");
+  }
+
+  Object.assign(reservation, {
+    unit_id,
+    guest_name,
+    check_in,
+    check_out,
+  });
+
+  const [createdReservation, generatedAccessCodeData] = await Promise.all([
+    reservation.save(),
+    generateAccessCode(
+      { remote_lock_id, check_in, check_out, guest_name, id },
+      access_token?.token
+    ),
+  ]);
+  await accessCodeService.updateRemotePassCode(reservation.id, {
+    remote_passcode_id: generatedAccessCodeData.remote_passcode_id,
+  });
 };
 
 export const reservationService = {
   create,
+  update,
 };
