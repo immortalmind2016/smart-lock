@@ -25,11 +25,7 @@ export class AccessCode extends BaseEntity {
   @JoinColumn({ name: "reservation_id" })
   reservation: Reservation;
 
-  @Column({ type: "text" })
-  @Field()
-  remote_lock_id: string;
-
-  @Column({ type: "varchar", length: 6 })
+  @Column({ type: "varchar", length: 7 })
   @Field()
   passcode: string;
 

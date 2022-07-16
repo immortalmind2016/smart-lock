@@ -4,7 +4,7 @@ import { Context } from "types";
 
 export function UseLock() {
   return createMethodDecorator<Context>(async ({ args, context }, next) => {
-    const lock = await Lock.findOneBy({ id: args.unitID });
+    const lock = await Lock.findOneBy({ unit_id: args.unitID });
     context.lockData = lock;
     if (!lock) {
       throw new Error(

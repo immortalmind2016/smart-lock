@@ -1,7 +1,6 @@
 import { graphql } from "graphql";
 import { buildSchema, Maybe } from "type-graphql";
 import { Context } from "types";
-console.log({ dir: __dirname + "/src/**/*.resolver.{ts,js}" });
 interface Options {
   source: string;
   variableValues?: Maybe<{

@@ -16,16 +16,14 @@ export interface DeviceInfoResponse {
   [key: string]: string | Date | number;
 }
 
-interface TempPasswordResponseResult {
-  id: string;
-}
 export interface TempPasswordResponse {
-  [key: string]: string | Date | number | TempPasswordResponseResult;
+  id: string;
+  [key: string]: string | Date | number;
 }
 
 export interface TempPasswordRequestBody {
-  effective_time: Date;
-  invalid_time: Date;
+  effective_time: Date | number;
+  invalid_time: Date | number;
   time_zone?: string;
   phone?: string;
   type?: number;

@@ -22,11 +22,13 @@ interface HeadersOptions {
   method: string;
   signUrl: string;
   body?: TempPasswordRequestBody | {};
+  token?: string;
 }
 export const httpClientHeaders = async ({
   method,
   signUrl,
   body = {},
+  token,
 }: HeadersOptions) => {
   const contentHash = crypto
     .createHash("sha256")
@@ -35,14 +37,14 @@ export const httpClientHeaders = async ({
 
   const timestamp = Date.now().toString();
   const stringToSign = [method, contentHash, "", signUrl].join("\n");
-  const signStr = config.accessKey + timestamp + stringToSign;
+  const signStr = config.accessKey + (token ?? "") + timestamp + stringToSign;
 
   const headers = {
     t: timestamp,
     sign_method: "HMAC-SHA256",
     client_id: config.accessKey,
     sign: await encryptStr(signStr, config.secretKey),
-    body,
+    ...(token && { access_token: token }),
   };
   return headers;
 };

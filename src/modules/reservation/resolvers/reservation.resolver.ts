@@ -15,6 +15,8 @@ import { UseLock } from "../../../decorators/has-lock";
 import { Context, TempPasswordRequestBody } from "../../../types";
 import { generatePassword } from "../utils";
 import { generateTempPassword } from "../../../utils/tuya-services";
+import { redisClient } from "../../../utils/redis-client";
+import { reservationService } from "../reservation.service";
 
 @Resolver(Reservation)
 class ReservationResolver {
@@ -32,29 +34,14 @@ class ReservationResolver {
     @Arg("checkOut") check_out: Date,
     @Ctx() context: Context
   ) {
-    const reservation = Reservation.create({
-      unit_id,
-      guest_name,
-      check_in,
-      check_out,
-    });
     try {
-      const createdReservation = await reservation.save();
-      //logic of creating the access code will be here
-      //create access code on the IOT platform related to this device
-      const body: TempPasswordRequestBody = {
-        effective_time: check_in,
-        invalid_time: check_out,
-        name: `reservation-${guest_name}`,
-        password: String(generatePassword()),
-      };
-
-      const tempPassword = await generateTempPassword(
-        String(context.lockData?.id),
-        body
-      );
-
-      return createdReservation;
+      return reservationService.create({
+        unit_id,
+        guest_name,
+        check_in,
+        check_out,
+        remote_lock_id: context.lockData?.remote_lock_id || "",
+      });
     } catch (e) {
       console.log(e);
       return null;

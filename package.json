@@ -11,7 +11,11 @@
     "gen:gql": "graphql-codegen --config codegen.yml",
     "generate-token:dev": "cross-env CLI=true ts-node ./src/modules/token/utils/generate-token",
     "typeorm": "typeorm-ts-node-commonjs",
-    "test": "jest"
+    "test": "jest",
+    "migration:create": "typeorm migration:create",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/configs/data-source.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/data-source.ts"
+
   },
   "dependencies": {
     "@types/node-cron": "^3.0.2",
@@ -42,6 +46,7 @@
     "dotenv": "^16.0.1",
     "envalid": "^7.3.1",
     "ts-node": "10.7.0",
+    "tsconfig-paths": "^4.0.0",
     "typescript": "4.5.2"
   }
 }

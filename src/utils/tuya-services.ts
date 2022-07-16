@@ -44,47 +44,52 @@ export const refreshAccessToken: (
 
 export const removeAllGeneratedAccessCodes = () => {};
 export const generateTempPassword: (
+  token: string,
   deviceId: string,
   body: TempPasswordRequestBody
 ) => Promise<TempPasswordResponse> = async (
+  token: string,
   deviceId: string,
-  body: TempPasswordRequestBody
+  body: TempPasswordRequestBody | {} = {}
 ) => {
-  const method = "GET";
+  const method = "POST";
   const signUrl = `/v1.0/devices/${deviceId}/door-lock/temp-password`;
   const headers = await httpClientHeaders({
     method,
     signUrl,
     body,
+    token,
   });
 
-  const { data: login } = await httpClient.get(signUrl, {
-    headers,
+  const { data } = await httpClient.request(signUrl, {
+    method,
+    headers: headers,
+    data: body,
+    url: signUrl,
   });
-  if (!login || !login.success) {
-    throw Error(`fetch failed: ${login.msg}`);
+  if (!data || !data.success) {
+    throw Error(`fetch failed: ${data.msg}`);
   }
-  return login.result;
+  return data.result;
 };
 export const getDeviceInfo: (
+  token: string,
   deviceId: string
-) => Promise<DeviceInfoResponse> = async (deviceId: string) => {
+) => Promise<DeviceInfoResponse> = async (token: string, deviceId: string) => {
   const method = "GET";
   const signUrl = `/v1.0/devices/${deviceId}`;
   const headers = await httpClientHeaders({
     method,
     signUrl,
+    token,
   });
 
-  const { data: login } = await httpClient.get(signUrl, {
+  const { data } = await httpClient.get(signUrl, {
     headers,
   });
-  if (!login || !login.success) {
-    throw Error(`fetch failed: ${login.msg}`);
-  }
-  return login.result;
-};
 
-// (async () => {
-//   console.log(await refreshAccessToken("911eb58d44442f4da43a618d60ffa998"));
-// })();
+  if (!data || !data.success) {
+    throw Error(`fetch failed: ${data.msg}`);
+  }
+  return data.result;
+};

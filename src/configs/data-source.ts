@@ -16,7 +16,9 @@ const options = {
   logging: false,
   entities: [`${__dirname}/../**/**/entities/*.entity.ts`],
   seeds: [`${__dirname}/../seeds/*.ts`],
+  migrations: [`${__dirname}/../migrations/*.ts`],
 };
+
 export const AppDataSource = new DataSource(
   options as PostgresConnectionOptions
 );
