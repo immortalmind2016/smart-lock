@@ -12,8 +12,7 @@
     "generate-token:dev": "cross-env CLI=true ts-node ./src/modules/token/utils/generate-token",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "jest",
-    "migration:create": "typeorm migration:create",
-    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/configs/data-source.ts",
+    "migration:run": "ts-node ./src/scripts/run-migrations.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/data-source.ts"
 
   },
