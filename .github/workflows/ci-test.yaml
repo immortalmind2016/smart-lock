@@ -36,28 +36,5 @@ jobs:
 
       - name: Run test command
         timeout-minutes: 5
-        run: yarn test > coverage.txt
-      - name: echo coverage table
-        run: |
-          awk '/-------------------------------|---------|----------|-----/{x=NR+1}(NR<=x){print}' coverage.txt > coverageTable.txt
- 
-      - name: print coverage
-        run: cat coverageTable.txt 
-      - name: set var
-        run: |
-          echo 'TABLE<<EOF' >> $GITHUB_ENV
-          cat coverageTable.txt >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-      - name: Add comment with coverage
-        uses: mshick/add-pr-comment@v1
-        with:
-          message: |
-            **test**
-            ${{ env.TABLE }}
-            🌏
-            !
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: 'github-actions[bot]'
-          allow-repeats: false # This is the default
-
+        run: yarn test
 
