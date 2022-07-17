@@ -34,6 +34,10 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Run docker command
+        timeout-minutes: 5
+        run: docker-compose up
+
       - name: Run test command
         timeout-minutes: 5
         run: yarn test
