@@ -32,7 +32,7 @@ beforeAll(async () => {
 });
 afterAll(async () => {
   try {
-    await Promise.all([redisClient.quit(), server.stop()]);
+    await Promise.all([redisClient.quit()]);
   } catch (e) {
     console.log(e);
   }
