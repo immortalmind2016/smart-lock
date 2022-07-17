@@ -1,6 +1,6 @@
 import envConfig from "../configs/env-config";
 import crypto from "crypto";
-import { TempPasswordRequestBody } from "types";
+import { TempPasswordRequestBody } from "../types";
 import axios from "axios";
 import { redistAccessToken } from "./redis-setter-getter";
 
@@ -24,13 +24,20 @@ interface HeadersOptions {
   method: string;
   signUrl: string;
   body?: TempPasswordRequestBody | {};
+  withToken?: boolean;
 }
 export const httpClientHeaders = async ({
   method,
   signUrl,
   body = {},
+  withToken = true,
 }: HeadersOptions) => {
-  const { token } = (await redistAccessToken()) || {};
+  let token;
+
+  if (withToken) {
+    const { token: tokenInRedis } = (await redistAccessToken()) || {};
+    token = tokenInRedis;
+  }
 
   const contentHash = crypto
     .createHash("sha256")

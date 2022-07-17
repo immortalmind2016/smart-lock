@@ -12,7 +12,7 @@ const options = {
   username: DB_USER,
   password: DB_PASSWORD,
   database: DB_NAME,
-  synchronize: true,
+  synchronize: isTest ? true : false,
   logging: false,
   entities: [`${__dirname}/../**/**/entities/*.entity.ts`],
   seeds: [`${__dirname}/../seeds/*.ts`],

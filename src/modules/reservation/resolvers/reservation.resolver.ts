@@ -19,7 +19,7 @@ import { reservationService } from "../reservation.service";
 class ReservationResolver {
   @Query(() => [Reservation])
   async reservations() {
-    return Reservation.find({});
+    return reservationService.list();
   }
 
   @Mutation(() => Reservation)
@@ -39,9 +39,9 @@ class ReservationResolver {
         check_out,
         remote_lock_id: context.lockData?.remote_lock_id || "",
       });
-    } catch (e) {
-      console.log(e);
-      return null;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(`cannot create reservation ${e.message}`);
     }
   }
 
@@ -63,9 +63,9 @@ class ReservationResolver {
         check_out,
         remote_lock_id: context.lockData?.remote_lock_id || "",
       });
-    } catch (e) {
-      console.log(e);
-      return null;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(`cannot update reservation ${e.message}`);
     }
   }
   @Mutation(() => Reservation)
@@ -79,9 +79,9 @@ class ReservationResolver {
         id,
         context.lockData?.remote_lock_id as string
       );
-    } catch (e) {
-      console.log(e);
-      return null;
+    } catch (e: any) {
+      console.error(e);
+      throw new Error(`cannot update reservation ${e.message}`);
     }
   }
 

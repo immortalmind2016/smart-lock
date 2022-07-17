@@ -1,15 +1,9 @@
-{  "ts-node": {
-   // these options are overrides used only by ts-node
-   "compilerOptions": {
-     "module": "commonjs"
-   }
- },
+{  
    "compilerOptions": {
       "target": "es2016",
       "module": "commonjs",
-      "baseUrl": "src",
-      "rootDir": "src",
-      "outDir": "/dist",
+      "rootDir": "./src",
+      "outDir": "./dist",
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,         
       "strict": true,
@@ -20,8 +14,9 @@
       "noImplicitAny": false,
       "allowJs": true
     },
-    "exclude": ["node_modules/**/*"],
-    "include": ["src/**/*", "jest-preset.js", "jest-preset.js"],
-    
+
+    "exclude": ["dist","test","jest.config.ts","tsconfig.json","ormconfig.ts"],
+    "include": ["src/**/*"],
+
 
 }

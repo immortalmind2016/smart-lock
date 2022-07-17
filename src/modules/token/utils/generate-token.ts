@@ -9,10 +9,12 @@ import { redisClient } from "../../../utils/redis-client";
 const { CLI } = envConfig;
 
 export const generateAccessToken = async () => {
-  await redisClient.connect();
+  if (!redisClient.isOpen) await redisClient.connect();
+
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
   }
+  console.log("Try To create Token");
   const { access_token, expire_time, refresh_token, uid } =
     (await getAccessToken()) || {};
 

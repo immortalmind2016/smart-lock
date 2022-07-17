@@ -24,11 +24,11 @@ export const refreshAccessJob: nodeSchedule.Job = nodeSchedule.scheduleJob(
   "*/2 * * * *",
   async () => {
     const currentDate = dayjs();
-    const token = (
+    let token = (
       await AccessToken.find({ take: 1, order: { created_at: "DESC" } })
     )[0];
     if (!token) {
-      await AccessToken.find({ take: 1, order: { created_at: "DESC" } });
+      token = await generateAccessToken();
     }
     try {
       if (dayjs(token.expire_date).isBefore(currentDate)) {

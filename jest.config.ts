@@ -4,8 +4,6 @@
  */
 
 export default {
-  clearMocks: true,
-  collectCoverage: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   testMatch: ["**/test/**/*.test.[jt]s?(x)"],

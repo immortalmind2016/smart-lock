@@ -1,5 +1,8 @@
 import { bool, cleanEnv, port, str } from "envalid";
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({
+  path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env",
+});
 
 const envConfig = cleanEnv(process.env, {
   PORT: port({ default: 3000 }),

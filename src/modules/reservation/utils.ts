@@ -1,4 +1,4 @@
-import { AccessToken } from "modules/token/entities/access-token.entity";
+import { AccessToken } from "../../modules/token/entities/access-token.entity";
 import { redisClient } from "../../utils/redis-client";
 
 export const deviceLocalKeyRedis = (deviceId: string) =>

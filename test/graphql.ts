@@ -1,6 +1,6 @@
 import { graphql } from "graphql";
 import { buildSchema, Maybe } from "type-graphql";
-import { Context } from "types";
+import { Context } from "../src/types";
 interface Options {
   source: string;
   variableValues?: Maybe<{

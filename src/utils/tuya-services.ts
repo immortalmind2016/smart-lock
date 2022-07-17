@@ -1,9 +1,10 @@
+import cuid from "cuid";
 import {
   AccessTokenResponse,
   DeviceInfoResponse,
   TempPasswordRequestBody,
   TempPasswordResponse,
-} from "types";
+} from "../types";
 import { httpClientFactory } from "./httpClientFactory";
 import { httpClientHeaders } from "./tuya-client";
 
@@ -13,12 +14,18 @@ export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
   const headers = await httpClientHeaders({
     method,
     signUrl,
+    withToken: false,
   });
+  console.log(
+    "🚀 ~ file: tuya-services.ts ~ line 18 ~ constgetAccessToken: ~ headers",
+    headers
+  );
 
   const { data: login } = await httpClientFactory(signUrl, {
     method,
     headers,
   });
+
   if (!login || !login.success) {
     throw Error(`fetch failed: ${login.msg}`);
   }
@@ -45,6 +52,12 @@ export const refreshAccessToken: (
   return login.result;
 };
 
+export const removeGeneratedTempPasswordMocked: (
+  deviceId: string,
+  passwordId: string
+) => Promise<TempPasswordResponse> = async () => {
+  return { id: cuid() };
+};
 export const removeGeneratedTempPassword: (
   deviceId: string,
   passwordId: string
@@ -52,6 +65,8 @@ export const removeGeneratedTempPassword: (
   deviceId: string,
   passwordId: string
 ) => {
+  //FIXME: don't forget to remove this comment
+
   const method = "DELETE";
   const signUrl = `/v1.0/devices/${deviceId}/door-lock/temp-passwords/${passwordId}`;
   const headers = await httpClientHeaders({
@@ -69,6 +84,17 @@ export const removeGeneratedTempPassword: (
   }
   return data.result;
 };
+
+export const generateTempPasswordMocked: (
+  deviceId: string,
+  body: TempPasswordRequestBody
+) => Promise<TempPasswordResponse> = async (
+  deviceId: string,
+  body: TempPasswordRequestBody | {} = {}
+) => {
+  return { id: cuid() };
+};
+
 export const generateTempPassword: (
   deviceId: string,
   body: TempPasswordRequestBody
