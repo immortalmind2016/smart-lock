@@ -6,15 +6,16 @@ const sleep = (seconds: number) =>
   });
 export const retryLogic = (fn, ...args) => {
   const logic = async (fn, retryNo = 0, ...args) => {
-    console.log({ retryNo });
+    console.log(`retry ${retryNo}`);
     if (retryNo == 4) {
       throw new Error("reached the maximum number of retrying");
     }
     let result;
     try {
       result = await fn(...args);
-    } catch (e) {
+    } catch (e: any) {
       await sleep(retryNo);
+      console.error(e.message);
       result = await logic(fn, retryNo + 1, ...args);
     }
 

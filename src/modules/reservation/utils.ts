@@ -12,6 +12,3 @@ export const setDeviceLocalKeyInRedis = (deviceId: string, local_key: string) =>
 
 export const redisDeviceLocalKey = (deviceId: string) =>
   redisClient.get(deviceLocalKeyRedis(deviceId));
-
-export const redistAccessToken: () => Promise<AccessToken> = async () =>
-  JSON.parse((await redisClient.get("access_token")) || "");
