@@ -15,7 +15,7 @@ jobs:
       DB_HOST: "localhost"
       DB_USER: "stella"
       DB_PASSWORD:  "stella"
-      DB_NAME: "stella-test"
+      DB_NAME: "postgres"
       TUYA_HOST: "https://openapi.tuyaeu.com"
       TUYA_SECRET_KEY: ${{secrets.TUYA_SECRET_KEY}}
       TUYA_ACCESS_KEY: ${{ secrets.TUYA_ACCESS_KEY }}
