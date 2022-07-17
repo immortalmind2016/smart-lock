@@ -4,6 +4,8 @@ import {
   TempPasswordRequestBody,
   TempPasswordResponse,
 } from "types";
+import { httpClientFactory } from "./httpClientFactory";
+import { retryLogic } from "./retry-logic";
 import { httpClient, httpClientHeaders } from "./tuya-client";
 
 export const generateAccessCode = (deviceId: string) => {};
@@ -42,7 +44,32 @@ export const refreshAccessToken: (
   return login.result;
 };
 
-export const removeAllGeneratedAccessCodes = () => {};
+export const removeGeneratedTempPassword: (
+  token: string,
+  deviceId: string,
+  passwordId: string
+) => Promise<TempPasswordResponse> = async (
+  token: string,
+  deviceId: string,
+  passwordId: string
+) => {
+  const method = "DELETE";
+  const signUrl = `/v1.0/devices/${deviceId}/door-lock/temp-passwords/${passwordId}`;
+  const headers = await httpClientHeaders({
+    method,
+    signUrl,
+    token,
+  });
+
+  const { data } = await httpClient(signUrl, {
+    headers: headers,
+    url: signUrl,
+  });
+  if (!data || !data.success) {
+    throw Error(`fetch failed: ${data.msg}`);
+  }
+  return data.result;
+};
 export const generateTempPassword: (
   token: string,
   deviceId: string,
@@ -61,16 +88,20 @@ export const generateTempPassword: (
     token,
   });
 
-  const { data } = await httpClient.request(signUrl, {
-    method,
-    headers: headers,
-    data: body,
-    url: signUrl,
-  });
-  if (!data || !data.success) {
-    throw Error(`fetch failed: ${data.msg}`);
+  try {
+    const { data, status } = await httpClientFactory(signUrl, {
+      method,
+      headers: headers,
+      data: body,
+      url: signUrl,
+    });
+    if (!data || !data.success) {
+      throw Error(`fetch failed: ${data.msg}`);
+    }
+    return data.result;
+  } catch (e: any) {
+    throw Error(e?.message);
   }
-  return data.result;
 };
 export const getDeviceInfo: (
   token: string,

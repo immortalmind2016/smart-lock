@@ -3,10 +3,13 @@ import { AppDataSource } from "../../../configs/data-source";
 import { AccessToken } from "../entities/access-token.entity";
 import { getAccessToken } from "../../../utils/tuya-services";
 import envConfig from "../../../configs/env-config";
+import { setTokenInRedis } from "../../../utils/redis-setter-getter";
+import { redisClient } from "../../../utils/redis-client";
 
 const { CLI } = envConfig;
 
 export const generateAccessToken = async () => {
+  await redisClient.connect();
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
   }
@@ -24,7 +27,10 @@ export const generateAccessToken = async () => {
     expire_date: currentDate.add(expire_time, "second").toDate(),
   });
   const token = await newToken.save();
+  await setTokenInRedis(token);
   console.log("access token has been created ");
+  await redisClient.disconnect();
+  await AppDataSource.destroy();
   return token;
 };
 if (CLI) {

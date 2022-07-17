@@ -1,10 +1,15 @@
+import { FindOptionsWhere } from "typeorm";
 import { AccessCode } from "./entities/access-code.entity";
 
 type InputType = Pick<
   AccessCode,
   "passcode" | "remote_passcode_id" | "reservation_id"
 >;
-
+const findBy: (
+  input: FindOptionsWhere<AccessCode>
+) => Promise<AccessCode | null> = (input: FindOptionsWhere<AccessCode>) => {
+  return AccessCode.findOneBy(input);
+};
 const create = (input: InputType) => {
   const { passcode, remote_passcode_id, reservation_id } = input;
   const accessCode = AccessCode.create({
@@ -24,4 +29,4 @@ const updateRemotePassCode = (id: number, input: Partial<InputType>) => {
   });
 };
 
-export const accessCodeService = { create, updateRemotePassCode };
+export const accessCodeService = { create, updateRemotePassCode, findBy };

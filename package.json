@@ -14,7 +14,6 @@
     "test": "jest",
     "migration:run": "ts-node ./src/scripts/run-migrations.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/data-source.ts"
-
   },
   "dependencies": {
     "@types/node-cron": "^3.0.2",
@@ -34,7 +33,8 @@
     "ts-jest": "^28.0.6",
     "type-graphql": "^1.1.1",
     "typeorm": "0.3.6",
-    "typeorm-seeding": "^1.6.1"
+    "typeorm-seeding": "^1.6.1",
+    "worker-farm": "^1.7.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.18.6",

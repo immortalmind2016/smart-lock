@@ -12,10 +12,7 @@ import {
 import { Reservation } from "../entities/reservation.entity";
 import { UseLock } from "../../../decorators/has-lock";
 
-import { Context, TempPasswordRequestBody } from "../../../types";
-import { generatePassword } from "../utils";
-import { generateTempPassword } from "../../../utils/tuya-services";
-import { redisClient } from "../../../utils/redis-client";
+import { Context } from "../../../types";
 import { reservationService } from "../reservation.service";
 
 @Resolver(Reservation)
@@ -66,6 +63,22 @@ class ReservationResolver {
         check_out,
         remote_lock_id: context.lockData?.remote_lock_id || "",
       });
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+  @Mutation(() => Reservation)
+  @UseLock()
+  async cancelReservation(
+    @Arg("reservationID", () => ID) id: number,
+    @Ctx() context: Context
+  ) {
+    try {
+      return reservationService.cancel(
+        id,
+        context.lockData?.remote_lock_id as string
+      );
     } catch (e) {
       console.log(e);
       return null;

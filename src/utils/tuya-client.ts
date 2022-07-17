@@ -1,7 +1,7 @@
 import envConfig from "../configs/env-config";
 import crypto from "crypto";
 import { TempPasswordRequestBody } from "types";
-const axios = require("axios").default;
+import axios from "axios";
 const { TUYA_ACCESS_KEY, TUYA_HOST, TUYA_SECRET_KEY } = envConfig;
 
 const config = {

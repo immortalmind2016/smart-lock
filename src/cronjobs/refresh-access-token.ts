@@ -4,8 +4,8 @@ import { AccessToken } from "../modules/token/entities/access-token.entity";
 import nodeSchedule from "node-schedule";
 import dayjs from "dayjs";
 import { refreshAccessToken } from "../utils/tuya-services";
-import { redisClient } from "../utils/redis-client";
 import { generateAccessToken } from "../modules/token/utils/generate-token";
+import { setTokenInRedis } from "../utils/redis-setter-getter";
 
 const updateAccessToken = async (token: AccessToken) => {
   const { access_token, expire_time, refresh_token } =
@@ -20,10 +20,6 @@ const updateAccessToken = async (token: AccessToken) => {
   );
 };
 
-const setTokenInRedis = (token: AccessToken) => {
-  return redisClient.set("access_token", JSON.stringify(token));
-};
-
 export const refreshAccessJob: nodeSchedule.Job = nodeSchedule.scheduleJob(
   "*/2 * * * *",
   async () => {
@@ -31,15 +27,25 @@ export const refreshAccessJob: nodeSchedule.Job = nodeSchedule.scheduleJob(
     const token = (
       await AccessToken.find({ take: 1, order: { created_at: "DESC" } })
     )[0];
-    if (dayjs(token.expire_date).isBefore(currentDate)) {
-      const newToken = await generateAccessToken();
-      await setTokenInRedis(newToken);
-    } else if (
-      dayjs(token.expire_date).subtract(5, "minute").isBefore(currentDate) &&
-      !dayjs(token.expire_date).isBefore(currentDate)
-    ) {
-      await updateAccessToken(token);
-      await setTokenInRedis(token);
+    if (!token) {
+      await AccessToken.find({ take: 1, order: { created_at: "DESC" } });
+    }
+    try {
+      if (dayjs(token.expire_date).isBefore(currentDate)) {
+        console.log("generate new token");
+        await AccessToken.clear();
+        const newToken = await generateAccessToken();
+        await setTokenInRedis(newToken);
+      } else if (
+        dayjs(token.expire_date).subtract(5, "minute").isBefore(currentDate) &&
+        !dayjs(token.expire_date).isBefore(currentDate)
+      ) {
+        console.log("refresh token");
+        await updateAccessToken(token);
+        await setTokenInRedis(token);
+      }
+    } catch (e: any) {
+      console.error(e.message);
     }
   }
 );

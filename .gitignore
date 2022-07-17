@@ -5,4 +5,5 @@ build/
 tmp/
 temp/
 coverage/
-nodejs_demo.ts
+nodejs_demo.ts\
+.env
