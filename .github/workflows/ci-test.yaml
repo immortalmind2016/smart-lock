@@ -36,7 +36,7 @@ jobs:
 
       - name: Run docker command
         timeout-minutes: 5
-        run: docker-compose up
+        run: docker-compose up -d 
 
       - name: Run test command
         timeout-minutes: 5
