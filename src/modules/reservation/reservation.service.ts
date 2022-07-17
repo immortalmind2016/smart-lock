@@ -17,17 +17,15 @@ import dayjs from "dayjs";
 import { accessCodeService } from "../../modules/access-code/access-code.service";
 import { AppDataSource } from "configs/data-source";
 import { Reservation } from "./entities/reservation.entity";
-import workfarm from "worker-farm";
+import workerFarm from "worker-farm";
 import path from "path";
 import { promisify } from "util";
 
-var workerFarm = require("worker-farm"),
-  workers = workerFarm(
-    require.resolve(
-      path.join(__dirname, "child-process", "encrypting-password.js")
-    )
-  );
-console.log("🚀 ~ file: reservation.service.ts ~ line 30 ~ workers", workers);
+let workers = workerFarm(
+  require.resolve(
+    path.join(__dirname, "child-process", "encrypting-password.js")
+  )
+);
 const encryptPassword = promisify(workers);
 
 // generate access code using device local key and save it inside access code
@@ -48,7 +46,7 @@ const generateAccessCode = async (input, access_token: string) => {
   const deviceLocalKey = await redisDeviceLocalKey(deviceId);
 
   if (!deviceLocalKey) {
-    const deviceInfo = await getDeviceInfo(access_token, deviceId);
+    const deviceInfo = await getDeviceInfo(deviceId);
 
     await setDeviceLocalKeyInRedis(deviceId, deviceInfo.local_key);
   }
@@ -69,7 +67,7 @@ const generateAccessCode = async (input, access_token: string) => {
     password,
   };
 
-  const tempPassword = await generateTempPassword(access_token, deviceId, body);
+  const tempPassword = await generateTempPassword(deviceId, body);
   const remote_passcode_id = tempPassword.id;
 
   return {
@@ -134,7 +132,6 @@ export const update = async (id: number, input: InputType) => {
   // remove the old access key
   if (remote_lock_id) {
     await removeGeneratedTempPassword(
-      access_token?.token,
       remote_lock_id,
       remote_passcode_id as string
     );
@@ -168,7 +165,6 @@ const cancel = async (id: number, remote_lock_id: string) => {
     // remove the old access key
     if (remote_lock_id) {
       await removeGeneratedTempPassword(
-        access_token?.token,
         remote_lock_id,
         remote_passcode_id as string
       );

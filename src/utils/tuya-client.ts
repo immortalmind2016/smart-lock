@@ -2,6 +2,7 @@ import envConfig from "../configs/env-config";
 import crypto from "crypto";
 import { TempPasswordRequestBody } from "types";
 import axios from "axios";
+import { redistAccessToken } from "../modules/reservation/utils";
 const { TUYA_ACCESS_KEY, TUYA_HOST, TUYA_SECRET_KEY } = envConfig;
 
 const config = {
@@ -22,14 +23,13 @@ interface HeadersOptions {
   method: string;
   signUrl: string;
   body?: TempPasswordRequestBody | {};
-  token?: string;
 }
 export const httpClientHeaders = async ({
   method,
   signUrl,
   body = {},
-  token,
 }: HeadersOptions) => {
+  const token = await redistAccessToken();
   const contentHash = crypto
     .createHash("sha256")
     .update(!Object.keys(body).length ? "" : JSON.stringify(body))

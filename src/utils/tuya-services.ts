@@ -5,10 +5,8 @@ import {
   TempPasswordResponse,
 } from "types";
 import { httpClientFactory } from "./httpClientFactory";
-import { retryLogic } from "./retry-logic";
-import { httpClient, httpClientHeaders } from "./tuya-client";
+import { httpClientHeaders } from "./tuya-client";
 
-export const generateAccessCode = (deviceId: string) => {};
 export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
   const method = "GET";
   const signUrl = "/v1.0/token?grant_type=1";
@@ -17,7 +15,8 @@ export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
     signUrl,
   });
 
-  const { data: login } = await httpClient.get(signUrl, {
+  const { data: login } = await httpClientFactory(signUrl, {
+    method,
     headers,
   });
   if (!login || !login.success) {
@@ -25,6 +24,7 @@ export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
   }
   return login.result;
 };
+
 export const refreshAccessToken: (
   refresh_token: string
 ) => Promise<AccessTokenResponse> = async (refresh_token: string) => {
@@ -35,7 +35,8 @@ export const refreshAccessToken: (
     signUrl,
   });
 
-  const { data: login } = await httpClient.get(signUrl, {
+  const { data: login } = await httpClientFactory(signUrl, {
+    method,
     headers,
   });
   if (!login || !login.success) {
@@ -45,11 +46,9 @@ export const refreshAccessToken: (
 };
 
 export const removeGeneratedTempPassword: (
-  token: string,
   deviceId: string,
   passwordId: string
 ) => Promise<TempPasswordResponse> = async (
-  token: string,
   deviceId: string,
   passwordId: string
 ) => {
@@ -58,10 +57,10 @@ export const removeGeneratedTempPassword: (
   const headers = await httpClientHeaders({
     method,
     signUrl,
-    token,
   });
 
-  const { data } = await httpClient(signUrl, {
+  const { data } = await httpClientFactory(signUrl, {
+    method,
     headers: headers,
     url: signUrl,
   });
@@ -71,11 +70,9 @@ export const removeGeneratedTempPassword: (
   return data.result;
 };
 export const generateTempPassword: (
-  token: string,
   deviceId: string,
   body: TempPasswordRequestBody
 ) => Promise<TempPasswordResponse> = async (
-  token: string,
   deviceId: string,
   body: TempPasswordRequestBody | {} = {}
 ) => {
@@ -85,7 +82,6 @@ export const generateTempPassword: (
     method,
     signUrl,
     body,
-    token,
   });
 
   try {
@@ -104,18 +100,17 @@ export const generateTempPassword: (
   }
 };
 export const getDeviceInfo: (
-  token: string,
   deviceId: string
-) => Promise<DeviceInfoResponse> = async (token: string, deviceId: string) => {
+) => Promise<DeviceInfoResponse> = async (deviceId: string) => {
   const method = "GET";
   const signUrl = `/v1.0/devices/${deviceId}`;
   const headers = await httpClientHeaders({
     method,
     signUrl,
-    token,
   });
 
-  const { data } = await httpClient.get(signUrl, {
+  const { data } = await httpClientFactory(signUrl, {
+    method,
     headers,
   });
 
