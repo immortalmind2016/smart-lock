@@ -1,0 +1,63 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  Test:
+    name: Test
+    env:
+      PORT: 3000
+      DB_PORT: 5432
+      DB_HOST: "localhost"
+      DB_USER: "stella"
+      DB_PASSWORD:  "stella"
+      DB_NAME: "stella-test"
+      TUYA_HOST: "https://openapi.tuyaeu.com"
+      TUYA_SECRET_KEY: ${{secrets.TUYA_SECRET_KEY}}
+      TUYA_ACCESS_KEY: ${{ secrets.TUYA_ACCESS_KEY }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js v12.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.17
+          
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Run test command
+        timeout-minutes: 5
+        run: yarn test > coverage.txt
+      - name: echo coverage table
+        run: |
+          awk '/-------------------------------|---------|----------|-----/{x=NR+1}(NR<=x){print}' coverage.txt > coverageTable.txt
+ 
+      - name: print coverage
+        run: cat coverageTable.txt 
+      - name: set var
+        run: |
+          echo 'TABLE<<EOF' >> $GITHUB_ENV
+          cat coverageTable.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: Add comment with coverage
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            **test**
+            ${{ env.TABLE }}
+            🌏
+            !
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
+          allow-repeats: false # This is the default
+
+
