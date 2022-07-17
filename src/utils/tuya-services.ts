@@ -16,10 +16,6 @@ export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
     signUrl,
     withToken: false,
   });
-  console.log(
-    "🚀 ~ file: tuya-services.ts ~ line 18 ~ constgetAccessToken: ~ headers",
-    headers
-  );
 
   const { data: login } = await httpClientFactory(signUrl, {
     method,

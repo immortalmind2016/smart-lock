@@ -5,7 +5,7 @@ services:
         hostname: redis
         ports:
         - "6379:6379"
-    db:
+    postgres:
         image: postgres
         restart: always
         ports:
@@ -18,7 +18,6 @@ services:
           - stellaDatabase:/postgresql/data
         depends_on:
          - redis
-
 volumes:
   stellaDatabase:
 

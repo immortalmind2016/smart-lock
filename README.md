@@ -4,7 +4,6 @@ A Smart-lock app
 # Docker Compose to Install Dependencies
 - docker-compose up -d 
 
-
 # Installation
 - set your .env file as example from .env.example
 - type `yarn` in your command line to install the dependencies
@@ -14,5 +13,5 @@ A Smart-lock app
 - type `yarn start:dev`
 
 
-
-  
+# Build Docker Image
+- docker build .
