@@ -10,7 +10,7 @@ import {
 import { TempPasswordRequestBody } from "../types";
 import {
   generateTempPasswordMocked,
-  getDeviceInfoMock,
+  getDeviceInfo,
   removeGeneratedTempPasswordMocked,
 } from "../utils/tuya-services";
 import { accessCodeService } from "../modules/access-code/access-code.service";
@@ -41,7 +41,7 @@ export const generateAccessCode = async (input) => {
   const deviceLocalKey = await redisDeviceLocalKey(deviceId);
 
   if (!deviceLocalKey) {
-    const deviceInfo = await getDeviceInfoMock(deviceId);
+    const deviceInfo = await getDeviceInfo(deviceId);
 
     await setDeviceLocalKeyInRedis(deviceId, deviceInfo.local_key);
   }

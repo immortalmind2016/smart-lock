@@ -43,9 +43,6 @@ new Worker(
           reservation_id,
         });
       }
-      console.log(
-        await updateReservationStatusByAction(reservation_id)[name]?.()
-      );
       return { passcode, remote_passcode_id, reservation_id };
     } catch (e: any) {
       throw new Error(JSON.stringify({ action: name, reason: e.message }));

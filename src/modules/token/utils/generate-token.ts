@@ -1,10 +1,7 @@
 import dayjs from "dayjs";
 import { AppDataSource } from "../../../configs/data-source";
 import { AccessToken } from "../entities/access-token.entity";
-import {
-  getAccessToken,
-  getAccessTokenMock,
-} from "../../../utils/tuya-services";
+import { getAccessToken } from "../../../utils/tuya-services";
 import envConfig from "../../../configs/env-config";
 import { setTokenInRedis } from "../../../utils/redis-setter-getter";
 import { redisClient } from "../../../utils/redis-client";
@@ -19,7 +16,7 @@ export const generateAccessToken = async () => {
   }
 
   const { access_token, expire_time, refresh_token, uid } =
-    (await getAccessTokenMock()) || {};
+    (await getAccessToken()) || {};
 
   const currentDate = dayjs();
   await AccessToken.clear();
@@ -34,8 +31,10 @@ export const generateAccessToken = async () => {
   const token = await newToken.save();
   await setTokenInRedis(token);
   console.log("access token has been created ");
-  await redisClient.disconnect();
-  await AppDataSource.destroy();
+  if (CLI) {
+    await redisClient.disconnect();
+    await AppDataSource.destroy();
+  }
   return token;
 };
 if (CLI) {
