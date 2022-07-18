@@ -65,3 +65,8 @@ A Smart-lock app
 - pool until the status is `CREATED`
   
 ### Reservation Flow
+![image](https://user-images.githubusercontent.com/22199342/179476239-d648f379-d99d-43ec-b42d-5aad16124f75.png)
+
+### High level sketch 
+![image](https://user-images.githubusercontent.com/22199342/179476790-1d710566-3dab-4879-8bb9-6d3600abfef2.png)
+
