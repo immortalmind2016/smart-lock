@@ -13,9 +13,9 @@ const options = {
   database: DB_NAME,
   synchronize: isTest ? true : false,
   logging: false,
-  entities: [`${__dirname}/../**/**/entities/*.entity.ts`],
-  seeds: [`${__dirname}/../seeds/*.ts`],
-  migrations: [`${__dirname}/../migrations/*.ts`],
+  entities: [`${__dirname}/../**/**/entities/*.*`],
+  seeds: [`${__dirname}/../seeds/*.*`],
+  migrations: [`${__dirname}/../migrations/*.*`],
 };
 
 export const AppDataSource = new DataSource(

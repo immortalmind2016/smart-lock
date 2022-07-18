@@ -5,9 +5,9 @@
   "author": "Mohamed Salah <immortal.mind2016@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
     "watch:dev": "nodemon -e .ts -x yarn start:dev",
     "start:dev": "ts-node ./src/index.ts",
+    "start":"node ./dist/index.js",
     "build:ts": "tsc",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ./src/configs/data-source.ts",
     "gen:gql": "graphql-codegen --config codegen.yml",
