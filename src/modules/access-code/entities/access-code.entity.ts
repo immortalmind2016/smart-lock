@@ -6,6 +6,7 @@ import {
   JoinColumn,
   BaseEntity,
   OneToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { Reservation } from "../../reservation/entities/reservation.entity";
 
@@ -32,4 +33,12 @@ export class AccessCode extends BaseEntity {
   @Column({ type: "text" })
   @Field()
   remote_passcode_id: string;
+
+  @CreateDateColumn({
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+    type: "timestamp",
+  })
+  @Field()
+  created_at: Date;
 }

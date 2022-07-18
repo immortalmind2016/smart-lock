@@ -5,6 +5,7 @@ import {
   OneToMany,
   BaseEntity,
   OneToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { Reservation } from "../../reservation/entities/reservation.entity";
 import { Field, ID, ObjectType } from "type-graphql";
@@ -26,4 +27,11 @@ export class Unit extends BaseEntity {
 
   @OneToOne(() => Lock, (lock) => lock.unit)
   lock?: Lock;
+
+  @CreateDateColumn({
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+    type: "timestamp",
+  })
+  created_at: Date;
 }

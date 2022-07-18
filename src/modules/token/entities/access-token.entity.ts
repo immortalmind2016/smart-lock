@@ -1,4 +1,10 @@
-import { Column, PrimaryGeneratedColumn, Entity, BaseEntity } from "typeorm";
+import {
+  Column,
+  PrimaryGeneratedColumn,
+  Entity,
+  BaseEntity,
+  CreateDateColumn,
+} from "typeorm";
 
 @Entity({ name: "access_token" })
 export class AccessToken extends BaseEntity {
@@ -18,6 +24,10 @@ export class AccessToken extends BaseEntity {
   @Column({ type: "timestamp" })
   expire_date: Date;
 
-  @Column({ type: "timestamp" })
+  @CreateDateColumn({
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+    type: "timestamp",
+  })
   created_at: Date;
 }

@@ -57,7 +57,7 @@ const findAndRemove = async (reservation_id: number) => {
   if (!accessCode) {
     throw new Error("Access Code Not found");
   }
-  const d = await accessCodeRepository.remove(accessCode?.id);
+  await accessCodeRepository.remove(accessCode?.id);
   return accessCode;
 };
 export const accessCodeRepository = {

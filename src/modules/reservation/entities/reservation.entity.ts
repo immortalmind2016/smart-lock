@@ -7,6 +7,7 @@ import {
   ManyToOne,
   BaseEntity,
   OneToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { ReservationStatus } from "../../../types";
 import { AccessCode } from "../../access-code/entities/access-code.entity";
@@ -52,4 +53,12 @@ export class Reservation extends BaseEntity {
   })
   @Field()
   status?: ReservationStatus;
+
+  @CreateDateColumn({
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+    type: "timestamp",
+  })
+  @Field()
+  created_at: Date;
 }

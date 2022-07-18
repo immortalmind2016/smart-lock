@@ -6,6 +6,7 @@ import {
   JoinColumn,
   BaseEntity,
   OneToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { Unit } from "../../unit/entities/unit.entity";
 
@@ -27,4 +28,12 @@ export class Lock extends BaseEntity {
   @Column({ type: "text", unique: true })
   @Field()
   remote_lock_id: string;
+
+  @CreateDateColumn({
+    name: "created_at",
+    default: () => "CURRENT_TIMESTAMP",
+    type: "timestamp",
+  })
+  @Field()
+  created_at: Date;
 }
