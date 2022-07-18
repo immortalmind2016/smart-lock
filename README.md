@@ -45,6 +45,7 @@ A Smart-lock app
 - create/update/remove access code from the external APIs using bull message queue from redis
   
 ## Near future improvements 
+- Deploy it to heroku ( cloud )
 - ADD CD
 - pagination for reservations
 - Logging
