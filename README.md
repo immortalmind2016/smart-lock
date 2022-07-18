@@ -49,7 +49,6 @@ A Smart-lock app
 - ADD CD
 - pagination for reservations
 - Logging
-- linting
 - Add more tests
 - Allow dependency injection for the services
 
