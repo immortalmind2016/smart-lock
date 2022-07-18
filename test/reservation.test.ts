@@ -9,18 +9,15 @@ import { AccessCodesWorker } from "../src/background-jobs/worker";
 import { ApolloServer } from "apollo-server";
 import envConfig from "../src/configs/env-config";
 import { generateAccessToken } from "../src/modules/token/utils/generate-token";
-import { runSeeder, useRefreshDatabase } from "typeorm-seeding";
+import { runSeeder } from "typeorm-seeding";
 import UnitLockSeeder from "../src/seeds/unit-lock";
 import {
-  cancelReservationMutation,
   createReservationMutation,
   updateReservationMutation,
 } from "./queries";
-import { QueueEvents } from "bullmq";
 
 jest.setTimeout(1000000);
 
-const { DB_NAME } = envConfig;
 let server: ApolloServer;
 beforeAll(async () => {
   await AppDataSource.initialize();
@@ -67,10 +64,6 @@ describe("test reservation creation", () => {
     updateReservationUnitId2: 1,
     reservationId: 1,
   };
-  const variableValuesCancel = {
-    id: 1,
-  };
-
   it("should pass create reservation", async () => {
     const { data } = await server.executeOperation({
       query: createReservationMutation,
