@@ -28,8 +28,6 @@ A Smart-lock app
     ```bash
     yarn test
     ```
-
-
 ## Major Tools
 - Nodejs
 - TypeScript
@@ -40,19 +38,21 @@ A Smart-lock app
 - Redis
 - Bull [for background tasks queue]
 
-
-## Limitation
-- github actions will always fail because it has no access to Tuya APIs
+## Performance Improvements
+### Child Process
+- encrypt password inside another process using worker-farm package
+### Background Jobs
+- create/update/remove access code from the external APIs using bull message queue from redis
   
-
 ## Near future improvements 
 - ADD CD
 - pagination for reservations
 - Logging
 - linting
 
-## Child Process
-- encrypt password inside another process using worker-farm pakcage
-
+## Limitation
+- github actions will always fail because it has no access to Tuya APIs
+- 
+  
 ## Diagrams 
 ### Reservation Flow
