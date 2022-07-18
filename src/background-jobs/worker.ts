@@ -15,7 +15,7 @@ const updateReservationStatusByAction = (id: number) => ({
     reservationService.updateStatusById(id, ReservationStatus.UPDATED),
 });
 
-new Worker(
+export const AccessCodesWorker = new Worker(
   "access-code",
   async ({ data, name }) => {
     try {

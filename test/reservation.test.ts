@@ -1,6 +1,11 @@
 import { AppDataSource } from "../src/configs/data-source";
 import { redisClient } from "../src/utils/redis-client";
 import { buildServer } from "../src/server";
+import {
+  accessCodesQueue,
+  accessCodesQueueEvents,
+} from "../src/background-jobs/generate-access-code";
+import { AccessCodesWorker } from "../src/background-jobs/worker";
 import { ApolloServer } from "apollo-server";
 import envConfig from "../src/configs/env-config";
 import { generateAccessToken } from "../src/modules/token/utils/generate-token";
@@ -11,6 +16,7 @@ import {
   createReservationMutation,
   updateReservationMutation,
 } from "./queries";
+import { QueueEvents } from "bullmq";
 
 jest.setTimeout(1000000);
 
@@ -22,17 +28,23 @@ beforeAll(async () => {
 
   try {
     await AppDataSource.runMigrations();
-  } catch {}
+  } catch (e) {
+    console.log(e);
+  }
   await runSeeder(UnitLockSeeder);
   await generateAccessToken();
 
   server = await buildServer();
-
-  await redisClient.connect();
 });
 afterAll(async () => {
   try {
-    await Promise.all([redisClient.quit()]);
+    await Promise.all([
+      redisClient.quit(),
+      AppDataSource.destroy(),
+      accessCodesQueueEvents.close(),
+      AccessCodesWorker.close(),
+      accessCodesQueue.close(),
+    ]);
   } catch (e) {
     console.log(e);
   }
@@ -79,17 +91,6 @@ describe("test reservation creation", () => {
     expect(data?.updateReservation).toEqual({
       id: expect.any(Number),
       guest_name: variableValuesUpdate.updateReservationGuestName2,
-    });
-  });
-  it("should pass cancel reservation", async () => {
-    const { data, errors } = await server.executeOperation({
-      query: cancelReservationMutation,
-      variables: variableValuesCancel,
-    });
-
-    expect(data?.cancelReservation).toEqual({
-      id: expect.any(Number),
-      is_cancelled: true,
     });
   });
 });
