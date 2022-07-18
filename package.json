@@ -16,7 +16,8 @@
     "migration:run": "ts-node ./src/scripts/run-migrations.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/data-source.ts",
     "lint": "eslint . --ext .ts",
-    "lint:fix":"eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "apollo-datasource": "^3.3.2",
@@ -56,7 +57,7 @@
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "jest": "^28.1.3",
     "lint-staged": "^13.0.3",
     "nodemon": "^2.0.19",
@@ -67,6 +68,6 @@
     "typescript": "4.5.2"
   },
   "lint-staged": {
-    "*.ts": "eslint --ext .ts,.tsx --fix"
+    "*.ts": "eslint --ext .ts --fix"
   }
 }
