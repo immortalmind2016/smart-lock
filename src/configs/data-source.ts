@@ -4,7 +4,6 @@ import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConne
 import envConfig from "./env-config";
 
 const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER, isTest } = envConfig;
-console.log({ isTest });
 const options = {
   type: "postgres",
   host: DB_HOST,

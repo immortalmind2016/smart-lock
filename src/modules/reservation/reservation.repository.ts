@@ -1,4 +1,5 @@
 import { FindOptionsWhere, In } from "typeorm";
+import { ReservationStatus } from "../../types";
 import { convertToDataloaderResult } from "../../utils/graphql/convert-to-dataloader-results";
 import { dataLoaderFactory } from "../../utils/graphql/dataloader-factory";
 import { AccessCode } from "../access-code/entities/access-code.entity";
@@ -16,7 +17,7 @@ const reservationLoader = dataLoaderFactory<number, Reservation>(
 type InputType = Pick<
   Reservation,
   "unit_id" | "guest_name" | "check_in" | "check_out"
->;
+> & { status?: ReservationStatus };
 
 const create = (input: InputType) => {
   const reservation = Reservation.create({ ...input });
@@ -55,6 +56,9 @@ const updateBy = async (
   Object.assign(reservation, input);
   return reservation?.save();
 };
+const updateStatusById = (id: number, status: ReservationStatus) => {
+  return Reservation.update({ id }, { status });
+};
 const list = () => Reservation.find({});
 export const reservationRepository = {
   create,
@@ -64,4 +68,5 @@ export const reservationRepository = {
   list,
   findById,
   updateBy,
+  updateStatusById,
 };

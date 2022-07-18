@@ -1,17 +1,6 @@
-import envConfig from "../../configs/env-config";
-import { TempPasswordRequestBody } from "../../types";
-import {
-  generateTempPasswordMocked,
-  getDeviceInfo,
-  removeGeneratedTempPasswordMocked,
-} from "../../utils/tuya-services";
+import { AccessCodeActions, ReservationStatus } from "../../types";
+import { removeGeneratedTempPasswordMocked } from "../../utils/tuya-services";
 import { reservationRepository } from "./reservation.repository";
-import {
-  generatePassword,
-  redisDeviceLocalKey,
-  setDeviceLocalKeyInRedis,
-} from "./utils";
-import dayjs from "dayjs";
 import { accessCodeService } from "../../modules/access-code/access-code.service";
 import { Reservation } from "./entities/reservation.entity";
 import { accessCodesQueue } from "../../background-jobs/generate-access-code";
@@ -19,14 +8,14 @@ import { accessCodesQueue } from "../../background-jobs/generate-access-code";
 type InputType = Pick<
   Reservation,
   "unit_id" | "guest_name" | "check_in" | "check_out"
-> & { remote_lock_id: string };
+> & { remote_lock_id: string; status?: ReservationStatus };
 const create = async (input: InputType) => {
-  //create reservation and get access token to use it to create the temp password
   const reservation = await reservationRepository.create(input);
 
   const { check_in, check_out, guest_name, id } = reservation || {};
   const { remote_lock_id } = input || {};
-  accessCodesQueue.add("CREATE", {
+  //Run background process
+  accessCodesQueue.add(AccessCodeActions.CREATE, {
     remote_lock_id,
     check_in,
     check_out,
@@ -52,7 +41,9 @@ export const update = async (id: number, input: InputType) => {
     //else remove the Tuya access code and update the entity in our db
     //background job update
     accessCodesQueue.add(
-      is_cancelled ? "UPDATE-CANCELLED" : "UPDATE-NOT-CANCELLED",
+      is_cancelled
+        ? AccessCodeActions.UPDATE_CANCELLED
+        : AccessCodeActions.UPDATE_NOT_CANCELLED,
       {
         check_in,
         check_out,
@@ -70,6 +61,7 @@ export const update = async (id: number, input: InputType) => {
         check_in,
         check_out,
         is_cancelled: false,
+        status: ReservationStatus.PENDING,
       }
     );
   } catch (e: any) {
@@ -84,7 +76,6 @@ const cancel = async (id: number, remote_lock_id: string) => {
       reservationRepository.cancel(id),
       accessCodeService.findAndRemove(id),
     ]);
-    console.log("CANCEL");
     const { remote_passcode_id } = accessCode || {};
     // remove the old access key
     if (remote_lock_id) {
@@ -102,10 +93,14 @@ const cancel = async (id: number, remote_lock_id: string) => {
 };
 export const list = () => reservationRepository.list();
 const remove = (id: number) => reservationRepository.remove(id);
+export const updateStatusById = (id: number, status: ReservationStatus) =>
+  reservationRepository.updateStatusById(id, status);
+
 export const reservationService = {
   create,
   update,
   cancel,
   list,
   remove,
+  updateStatusById,
 };

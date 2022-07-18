@@ -33,7 +33,6 @@ export const generateAccessCode = async (input) => {
     id,
   } = input || {};
 
-  console.log({ deviceId });
   if (!deviceId) {
     throw new Error(JSON.stringify(input, null, 2));
   }
@@ -47,7 +46,7 @@ export const generateAccessCode = async (input) => {
     await setDeviceLocalKeyInRedis(deviceId, deviceInfo.local_key);
   }
 
-  // create temp password for this reservation using the access token
+  // generate password with 7-digits
   const passcode = String(generatePassword());
 
   const password = (
@@ -63,6 +62,7 @@ export const generateAccessCode = async (input) => {
     password,
   };
 
+  //create temp password inside Tuya
   const tempPassword = await generateTempPasswordMocked(deviceId, body);
 
   const remote_passcode_id = tempPassword.id;

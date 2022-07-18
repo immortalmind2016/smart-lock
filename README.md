@@ -52,9 +52,15 @@ A Smart-lock app
 - Add more tests
 - Allow dependency injection for the services
 
+
 ## Limitation
 - github actions will always fail because it has no access to Tuya APIs
-- 
+
   
+
 ## Diagrams 
+
+### Flow of creating reservation from the client side
+- use `createReservation` mutation, you can get the result with status `PENDING`
+- pool until the status is `CREATED`
 ### Reservation Flow

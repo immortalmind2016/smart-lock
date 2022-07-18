@@ -13,7 +13,7 @@ export const accessCodesQueueEvents = new QueueEvents("access-code", {
 });
 
 accessCodesQueueEvents.on("completed", ({ returnvalue }) => {
-  console.log("access code has been successfully create ", { returnvalue });
+  console.log("changes over access code have been successfully completed ");
 });
 
 accessCodesQueueEvents.on("failed", async ({ failedReason }) => {
@@ -26,6 +26,6 @@ accessCodesQueueEvents.on("failed", async ({ failedReason }) => {
       await reservationService.remove(reasonData?.id);
     }
   } catch (e) {
-    console.log(e);
+    console.log(`changes have been failed ${failedReason}`);
   }
 });

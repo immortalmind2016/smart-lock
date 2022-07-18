@@ -30,3 +30,14 @@ export interface TempPasswordRequestBody {
   name: string;
   password: string;
 }
+
+export enum ReservationStatus {
+  PENDING = "PENDING",
+  CREATED = "CREATED",
+  UPDATED = "UPDATED",
+}
+export enum AccessCodeActions {
+  UPDATE_NOT_CANCELLED = "UPDATE_NOT_CANCELLED",
+  UPDATE_CANCELLED = "UPDATE_CANCELLED",
+  CREATE = "CREATE",
+}

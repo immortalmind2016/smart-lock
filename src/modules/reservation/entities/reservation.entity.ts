@@ -8,6 +8,7 @@ import {
   BaseEntity,
   OneToOne,
 } from "typeorm";
+import { ReservationStatus } from "../../../types";
 import { AccessCode } from "../../access-code/entities/access-code.entity";
 import { Unit } from "../../unit/entities/unit.entity";
 
@@ -43,4 +44,12 @@ export class Reservation extends BaseEntity {
   @Column({ type: "boolean", default: false })
   @Field()
   is_cancelled: boolean;
+
+  @Column({
+    type: "enum",
+    enum: ReservationStatus,
+    default: ReservationStatus.PENDING,
+  })
+  @Field()
+  status?: ReservationStatus;
 }
