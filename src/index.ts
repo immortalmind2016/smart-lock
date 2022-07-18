@@ -6,7 +6,7 @@ import { AppDataSource } from "./configs/data-source";
 import { refreshAccessJob } from "./cronjobs/refresh-access-token";
 import { redisClient } from "./utils/redis-client";
 import { buildServer } from "./server";
-
+import "./background-jobs/worker";
 const { PORT } = envConfig;
 
 const start = async () => {

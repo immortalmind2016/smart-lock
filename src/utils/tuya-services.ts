@@ -7,7 +7,15 @@ import {
 } from "../types";
 import { httpClientFactory } from "./httpClientFactory";
 import { httpClientHeaders } from "./tuya-client";
-
+export const getAccessTokenMock: () => Promise<AccessTokenResponse> =
+  async () => {
+    return {
+      access_token: "1",
+      expire_time: 4000,
+      refresh_token: "1",
+      uid: "1",
+    };
+  };
 export const getAccessToken: () => Promise<AccessTokenResponse> = async () => {
   const method = "GET";
   const signUrl = "/v1.0/token?grant_type=1";
@@ -61,8 +69,6 @@ export const removeGeneratedTempPassword: (
   deviceId: string,
   passwordId: string
 ) => {
-  //FIXME: don't forget to remove this comment
-
   const method = "DELETE";
   const signUrl = `/v1.0/devices/${deviceId}/door-lock/temp-passwords/${passwordId}`;
   const headers = await httpClientHeaders({
@@ -120,6 +126,11 @@ export const generateTempPassword: (
   } catch (e: any) {
     throw Error(e?.message);
   }
+};
+export const getDeviceInfoMock: (
+  deviceId: string
+) => Promise<DeviceInfoResponse> = async (deviceId: string) => {
+  return { local_key: "134455" };
 };
 export const getDeviceInfo: (
   deviceId: string

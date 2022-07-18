@@ -7,7 +7,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "watch:dev": "nodemon -e .ts -x yarn start:dev",
-    "start:dev":"ts-node ./src/index.ts",
+    "start:dev": "ts-node ./src/index.ts",
     "build:ts": "tsc",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ./src/configs/data-source.ts",
     "gen:gql": "graphql-codegen --config codegen.yml",
@@ -22,6 +22,8 @@
     "apollo-server": "^3.10.0",
     "axios": "^0.27.2",
     "axios-mock-adapter": "^1.21.1",
+    "bull": "^4.8.4",
+    "bullmq": "^1.86.7",
     "class-validator": "^0.13.2",
     "cuid": "^2.1.8",
     "dataloader": "^2.1.0",

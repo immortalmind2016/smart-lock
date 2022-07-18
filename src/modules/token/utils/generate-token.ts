@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
 import { AppDataSource } from "../../../configs/data-source";
 import { AccessToken } from "../entities/access-token.entity";
-import { getAccessToken } from "../../../utils/tuya-services";
+import {
+  getAccessToken,
+  getAccessTokenMock,
+} from "../../../utils/tuya-services";
 import envConfig from "../../../configs/env-config";
 import { setTokenInRedis } from "../../../utils/redis-setter-getter";
 import { redisClient } from "../../../utils/redis-client";
@@ -14,9 +17,9 @@ export const generateAccessToken = async () => {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
   }
-  console.log("Try To create Token");
+
   const { access_token, expire_time, refresh_token, uid } =
-    (await getAccessToken()) || {};
+    (await getAccessTokenMock()) || {};
 
   const currentDate = dayjs();
   await AccessToken.clear();

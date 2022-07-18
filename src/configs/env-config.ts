@@ -15,6 +15,8 @@ const envConfig = cleanEnv(process.env, {
   TUYA_SECRET_KEY: str({ default: "" }),
   TUYA_ACCESS_KEY: str({ default: "" }),
   CLI: bool({ default: false }),
+  REDIS_HOST: str({ default: "127.0.0.1" }),
+  REDIS_PORT: port({ default: 6379 }),
 });
 
 export default envConfig;

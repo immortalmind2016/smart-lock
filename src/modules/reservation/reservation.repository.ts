@@ -1,6 +1,7 @@
 import { FindOptionsWhere, In } from "typeorm";
 import { convertToDataloaderResult } from "../../utils/graphql/convert-to-dataloader-results";
 import { dataLoaderFactory } from "../../utils/graphql/dataloader-factory";
+import { AccessCode } from "../access-code/entities/access-code.entity";
 import { Reservation } from "./entities/reservation.entity";
 
 const reservationLoader = dataLoaderFactory<number, Reservation>(
@@ -12,9 +13,12 @@ const reservationLoader = dataLoaderFactory<number, Reservation>(
   }
 );
 
-const create = (
-  input: Pick<Reservation, "unit_id" | "guest_name" | "check_in" | "check_out">
-) => {
+type InputType = Pick<
+  Reservation,
+  "unit_id" | "guest_name" | "check_in" | "check_out"
+>;
+
+const create = (input: InputType) => {
   const reservation = Reservation.create({ ...input });
   return reservation.save();
 };
@@ -40,6 +44,17 @@ const cancel: (id: number) => Promise<Reservation | null> = async (
   Object.assign(reservation, { is_cancelled: true });
   return reservation.save();
 };
+const updateBy = async (
+  filter: FindOptionsWhere<Reservation>,
+  input: Partial<InputType> & { is_cancelled?: boolean }
+) => {
+  const reservation = await Reservation.findOneBy(filter);
+  if (!reservation) {
+    throw new Error("reservation not found");
+  }
+  Object.assign(reservation, input);
+  return reservation?.save();
+};
 const list = () => Reservation.find({});
 export const reservationRepository = {
   create,
@@ -48,4 +63,5 @@ export const reservationRepository = {
   remove,
   list,
   findById,
+  updateBy,
 };
