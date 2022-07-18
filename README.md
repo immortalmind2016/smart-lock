@@ -26,7 +26,7 @@ A Smart-lock app
 - Write the following command 
   
     ```bash
-    yarn test
+    docker build .
     ```
 ## Major Tools
 - Nodejs
