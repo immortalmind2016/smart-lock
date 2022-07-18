@@ -50,6 +50,7 @@ A Smart-lock app
 - Logging
 - linting
 - Add more tests
+- Allow dependency injection for the services
 
 ## Limitation
 - github actions will always fail because it has no access to Tuya APIs
