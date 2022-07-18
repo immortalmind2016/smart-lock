@@ -27,4 +27,3 @@ async function cleanup() {
 process.on("SIGINT", cleanup);
 process.on("SIGTERM", cleanup);
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
-console.log("HELLO");
