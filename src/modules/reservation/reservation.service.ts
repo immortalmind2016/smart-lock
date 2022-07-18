@@ -79,10 +79,11 @@ const cancel = async (id: number, remote_lock_id: string) => {
     const { remote_passcode_id } = accessCode || {};
     // remove the old access key
     if (remote_lock_id) {
-      await removeGeneratedTempPasswordMocked(
-        remote_lock_id,
-        remote_passcode_id as string
-      );
+      accessCodesQueue.add(AccessCodeActions.CANCELLED, {
+        remote_passcode_id,
+        accessCode,
+        id,
+      });
     }
 
     return reservation;
