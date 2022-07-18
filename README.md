@@ -49,6 +49,7 @@ A Smart-lock app
 - pagination for reservations
 - Logging
 - linting
+- Add more tests
 
 ## Limitation
 - github actions will always fail because it has no access to Tuya APIs
