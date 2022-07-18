@@ -22,7 +22,7 @@ accessCodesQueueEvents.on("failed", async ({ failedReason }) => {
     const { action, reason } = data || {};
     const reasonData = JSON.parse(reason);
     if (action == "CREATE") {
-      //remove reservation  we can't create the access code on creation only [ We can change this behavior based on the business requirements]
+      //remove reservation if we can't create the access code on creation only [ We can change this behavior based on the business requirements]
       await reservationService.remove(reasonData?.id);
     }
   } catch (e) {
