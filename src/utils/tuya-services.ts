@@ -92,7 +92,7 @@ export const generateTempPasswordMocked: (
   body: TempPasswordRequestBody
 ) => Promise<TempPasswordResponse> = async (
   deviceId: string,
-  body: TempPasswordRequestBody | {} = {}
+  body: TempPasswordRequestBody | { [key: string]: string } = {}
 ) => {
   return { id: cuid() };
 };
@@ -102,7 +102,7 @@ export const generateTempPassword: (
   body: TempPasswordRequestBody
 ) => Promise<TempPasswordResponse> = async (
   deviceId: string,
-  body: TempPasswordRequestBody | {} = {}
+  body: TempPasswordRequestBody | { [key: string]: string } = {}
 ) => {
   const method = "POST";
   const signUrl = `/v1.0/devices/${deviceId}/door-lock/temp-password`;

@@ -15,7 +15,7 @@ import {
 } from "../utils/tuya-services";
 import { accessCodeService } from "../modules/access-code/access-code.service";
 
-let workers = workerFarm(
+const workers = workerFarm(
   require.resolve(
     path.join(__dirname, "..", "child-process", "encrypting-password.js")
   )
@@ -81,7 +81,7 @@ export const removeGeneratedAccessCode = async (
   const accessCode = await accessCodeService.findBy({
     reservation_id: id,
   });
-  let remote_passcode_id = accessCode?.remote_passcode_id;
+  const remote_passcode_id = accessCode?.remote_passcode_id;
 
   // remove the old access key
   if (!remote_passcode_id) {

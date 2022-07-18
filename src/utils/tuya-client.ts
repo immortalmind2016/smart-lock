@@ -23,7 +23,7 @@ export const httpClient = axios.create({
 interface HeadersOptions {
   method: string;
   signUrl: string;
-  body?: TempPasswordRequestBody | {};
+  body?: TempPasswordRequestBody | { [key: string]: string };
   withToken?: boolean;
 }
 export const httpClientHeaders = async ({

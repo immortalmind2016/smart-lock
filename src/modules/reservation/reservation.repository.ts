@@ -38,7 +38,7 @@ const findById: (id: number) => Promise<Reservation | null> = async (
 const cancel: (id: number) => Promise<Reservation | null> = async (
   id: number
 ) => {
-  let reservation = await Reservation.findOneBy({ id });
+  const reservation = await Reservation.findOneBy({ id });
   if (!reservation) {
     return null;
   }

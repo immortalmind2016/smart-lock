@@ -15,7 +15,7 @@
       "allowJs": true
     },
 
-    "exclude": ["dist","test","jest.config.ts","tsconfig.json","ormconfig.ts"],
+    "exclude": ["dist","test","jest.config.ts","tsconfig.json","ormconfig.ts",".eslint.js"],
     "include": ["src/**/*"],
 
 

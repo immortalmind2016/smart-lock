@@ -33,7 +33,7 @@ const findById: (id: number) => Promise<AccessCode | null> = async (
 const cancel: (id: number) => Promise<AccessCode | null> = async (
   id: number
 ) => {
-  let accessCode = await AccessCode.findOneBy({ id });
+  const accessCode = await AccessCode.findOneBy({ id });
   if (!accessCode) {
     return null;
   }
